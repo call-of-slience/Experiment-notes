@@ -1,0 +1,96 @@
+Intel 和 AT&T 语法是两种不同的汇编语言语法，用于编写和阅读汇编代码。以下是它们的主要区别：
+
+1. 寄存器命名
+Intel 语法：
+
+不使用前缀。
+示例：eax、ebx、ecx。
+AT&T 语法：
+
+寄存器名前加 % 前缀。
+示例：%eax、%ebx、%ecx。
+2. 操作数排序
+Intel 语法：
+
+目标操作数在前，源操作数在后。
+示例：mov eax, ebx（将 ebx 的值移动到 eax）。
+AT&T 语法：
+
+源操作数在前，目标操作数在后。
+示例：movl %ebx, %eax（将 ebx 的值移动到 eax）。
+3. 常量/立即值格式
+Intel 语法：
+
+常量直接书写，不需要前缀。
+示例：mov eax, 0x1234。
+AT&T 语法：
+
+常量前加 $ 前缀。
+示例：movl $0x1234, %eax。
+
+ 对整数数组中的值进行寻址
+Intel 语法：
+
+计算数组元素的内存地址：base + index * element_size。
+示例
+mov eax, [array + ebx*4] ; 从数组地址 + ebx*4 加载值到 eax
+AT&T 语法：
+
+使用缩放因子计算地址：base(index, index_scale)。
+示例
+movl _array(%ebx, %ebx, 4), %ecx ; 从数组地址 + ebx*4 加载值到 %ecx
+
+5. 运算符大小规范
+Intel 语法：
+
+不直接在操作符中指定大小，通常通过指令本身来确定。
+示例：mov eax, ebx（32 位操作），mov ax, bx（16 位操作），mov al, bl（8 位操作）。
+AT&T 语法：
+
+使用后缀 b（字节）、w（字）、l（长字）来指定操作数大小。
+示例：movb %al, %bl（8 位），movw %ax, %bx（16 位），movl %eax, %ebx（32 位）。
+6. 引用内存
+Intel 语法：
+
+使用 [] 来引用内存。
+示例：mov eax, [ebx]（将 ebx 指向的内存地址的值加载到 eax）。
+AT&T 语法：
+
+使用 () 来引用内存。
+示例：movl (%ebx), %eax（将 ebx 指向的内存地址的值加载到 eax）。
+7. 寻址特定 C 变量
+Intel 语法：
+
+直接使用变量名。
+示例：mov eax, [my_var]（将 my_var 的值加载到 eax）。
+AT&T 语法：
+
+C 变量名前加 _。
+示例：movl $_my_var, %eax（将 _my_var 的地址加载到 eax）。
+8. 寻址寄存器指向的内容
+Intel 语法：
+
+使用 [] 表示寄存器指向的内存内容。
+示例：mov eax, [eax]（将 eax 指向的内存地址的值加载到 eax）。
+AT&T 语法：
+
+使用 () 表示寄存器指向的内存内容。
+示例：movl (%eax), %eax（将 eax 指向的内存地址的值加载到 eax）。
+9. 使用立即值进行偏移
+Intel 语法：
+
+使用 [] 并在其中加上立即值。
+示例：mov eax, [ebx + 4]（将内存地址 ebx + 4 处的值加载到 eax）。
+AT&T 语法：
+
+使用 () 并在括号内加上立即值。
+示例：movl 4(%ebx), %eax（将内存地址 4 + %ebx 处的值加载到 eax）。
+10. 对立即值进行简单数学计算
+Intel 语法：
+
+直接在地址计算中加上立即值。
+示例：mov eax, [ebx + 8]（内存地址为 ebx + 8）。
+AT&T 语法：
+
+立即值加在基址寄存器前面或在寄存器后面进行偏移。
+示例：movl 8(%ebx), %eax（内存地址为 8 + %ebx）
